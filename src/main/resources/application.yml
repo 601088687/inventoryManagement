@@ -1,0 +1,70 @@
+server:
+  port: 8086   # 项目部署端口
+  servlet:
+    context-path: /inventoryManagement
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+spring:
+  profiles:
+    active: dev # 配置文件的环境
+  application:
+    name: bootTemplate
+  datasource:
+    bootemplate:
+      druid:
+        url: jdbc:mysql://82.156.133.17:3308/test?rewriteBatchedStatements=true&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+        username: root
+        password: mysql_XYkm4p
+        driver-class-name: com.mysql.jdbc.Driver
+        initial-size: 5
+        #配置初始化大小、最小、最大线程数
+        min-idle: 5
+        #CPU核数+1，也可以大些但不要超过20，数据库加锁时连接过多性能下降
+        max-active: 20
+        #最大等待时间，内网：800，外网：1200（三次握手1s）
+        max-wait: 60000
+        time-between-eviction-runs-millis: 60000
+        #配置一个连接在池中最大空间时间，单位是毫秒
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1
+        test-while-idle: true
+        #设置从连接池获取连接时是否检查连接有效性，true检查，false不检查.会影响性能（不建议true）
+        test-on-borrow: false
+        #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+        pool-prepared-statements: false
+        max-pool-prepared-statement-per-connection-size: 20
+        #保持长连接
+        keep-alive: true
+  redis:
+    exam:
+      host: my.redis.fifedu.com
+      port: 7379
+      password: fifedu@redis
+    jedis:
+      pool:
+        maxActive: 10000  # 连接池最大连接数（使用负值表示没有限制）
+        maxWait: 6000     # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        maxIdle: 10000      # 连接池中的最大空闲连接
+        minIdle: 100      # 连接池中的最小空闲连接
+        testOnBorrow: false
+        testOnReturn: false
+        connectionTimeout: 60000
+tlog:
+  pattern: '[source=$preApp][ip=$preIp][spanId=$spanId][traceId=$traceId]'
+  enable-invoke-time-print: true
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.iflytek.fifms.tools.dao: DEBUG
+  file:
+    path: logs
+tools:
+  deployModel: 1
+  ticketKey: 9o8i7u6y
+  casServerUrl: http://hecs.fifedu.com/cas-server
+  casLogin: /login
+  casServerName: http://127.0.0.1
+  authSwitch: open
+  authExpireTime: 600000
